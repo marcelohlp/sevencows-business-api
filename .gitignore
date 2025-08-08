@@ -1,0 +1,68 @@
+### Arquivos comuns do Java ###
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Arquivos de pacote/compilação
+*.jar
+*.war
+*.ear
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Gradle (caso tenha no projeto) ###
+.gradle
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle-app.setting
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Arquivos do sistema ###
+.DS_Store
+Thumbs.db
+
+### Credenciais ou configs locais ###
+application-*.yml
+application-*.properties
