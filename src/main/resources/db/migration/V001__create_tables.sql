@@ -1,0 +1,182 @@
+-- TABLES --
+
+CREATE TABLE TBL_USERS (
+    id                  BIGINT          NOT NULL,
+    first_name          VARCHAR(30)     NOT NULL,
+    last_name           VARCHAR(30)     NOT NULL,
+    email               VARCHAR(120)    NOT NULL,
+    password            VARCHAR(120)    NOT NULL,
+    birthday            DATE            NOT NULL,
+    entry_date_time     TIMESTAMP       NOT NULL
+);
+
+CREATE TABLE TBL_USER_PREFERENCES (
+    user_id             BIGINT          NOT NULL,
+    user_timezone       VARCHAR(60)     NOT NULL,
+    gender              VARCHAR(20)     NOT NULL,
+    pronoun             VARCHAR(10)     NOT NULL,
+    preferred_name      VARCHAR(30)     NOT NULL
+);
+
+CREATE TABLE TBL_USERS_COMPANIES (
+    user_id             BIGINT          NOT NULL,
+    company_id          BIGINT          NOT NULL,
+    role                VARCHAR(10)     NOT NULL
+);
+
+CREATE TABLE TBL_COMPANIES (
+    id                  BIGINT          NOT NULL,
+    trade_name          VARCHAR(60)     NOT NULL,
+    legal_name          VARCHAR(60)     NOT NULL,
+    company_type        VARCHAR(10)     NOT NULL,
+    incorporation_date  DATE                    ,
+    entry_date_time     TIMESTAMP       NOT NULL,
+    modify_date_time    TIMESTAMP       NOT NULL
+);
+
+CREATE TABLE TBL_MOVEMENT_TYPES (
+    id                  BIGINT          NOT NULL,
+    company_id          BIGINT          NOT NULL,
+    movement_type	    VARCHAR(10)	    NOT NULL,
+    description		    VARCHAR(30)	    NOT NULL,
+    entry_date_time     TIMESTAMP       NOT NULL,
+    modify_date_time    TIMESTAMP       NOT NULL
+);
+
+CREATE TABLE TBL_CASH_MOVEMENTS (
+    id                  BIGINT          NOT NULL,
+    company_id          BIGINT          NOT NULL,
+    category_id         BIGINT          NOT NULL,
+    movement_id        BIGINT                  ,
+    movement_type	    VARCHAR(10)	    NOT NULL,
+    status			    VARCHAR(5)		NOT NULL,
+    amount			    DECIMAL(14,2)	NOT NULL,
+    description		    VARCHAR(30)	    NOT NULL,
+    due_date			DATE			NOT NULL,
+    entry_date_time     TIMESTAMP       NOT NULL,
+    modify_date_time    TIMESTAMP       NOT NULL
+);
+
+CREATE TABLE TBL_MONTHS_END_CLOSING (
+    id                  BIGINT          NOT NULL,
+    company_id          BIGINT          NOT NULL,
+    year                SMALLINT        NOT NULL,
+    month               SMALLINT        NOT NULL,
+    opening_balance	    DECIMAL(14,2)	NOT NULL,
+    closing_balance	    DECIMAL(14,2)	NOT NULL
+);
+
+CREATE TABLE TBL_CASH_DAILY_RESULTS (
+    id                  BIGINT          NOT NULL,
+    company_id          BIGINT          NOT NULL,
+    reference_date      DATE            NOT NULL,
+    total_inflows		DECIMAL(14,2)	NOT NULL,
+    total_outflows		DECIMAL(14,2)	NOT NULL,
+    daily_result		DECIMAL(14,2)	NOT NULL,
+    modify_date_time	TIMESTAMP 	    NOT NULL
+);
+
+-- PK --
+
+ALTER TABLE TBL_USERS
+ADD CONSTRAINT PK_TBL_USERS
+PRIMARY KEY (id);
+
+ALTER TABLE TBL_USER_PREFERENCES
+ADD CONSTRAINT PK_TBL_USERS_PREFERENCES
+PRIMARY KEY (user_id);
+
+ALTER TABLE TBL_USERS_COMPANIES
+ADD CONSTRAINT PK_TBL_USERS_COMPANIES
+PRIMARY KEY (user_id, company_id);
+
+ALTER TABLE TBL_COMPANIES
+ADD CONSTRAINT PK_TBL_COMPANIES
+PRIMARY KEY (id);
+
+ALTER TABLE TBL_MOVEMENT_TYPES
+ADD CONSTRAINT PK_TBL_MOVEMENT_TYPES
+PRIMARY KEY (id);
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT PK_TBL_CASH_MOVEMENTS
+PRIMARY KEY (id);
+
+ALTER TABLE TBL_MONTHS_END_CLOSING
+ADD CONSTRAINT PK_TBL_MONTHS_END_CLOSING
+PRIMARY KEY (id);
+
+ALTER TABLE TBL_CASH_DAILY_RESULTS
+ADD CONSTRAINT PK_TBL_CASH_DAILY_RESULTS
+PRIMARY KEY (id);
+
+-- FK --
+
+ALTER TABLE TBL_USER_PREFERENCES
+ADD CONSTRAINT FK_USERS_USERS_PREFERENCES
+FOREIGN KEY (user_id)
+REFERENCES TBL_USERS (id);
+
+ALTER TABLE TBL_USERS_COMPANIES
+ADD CONSTRAINT FK_USERS_USERS_COMPANIES
+FOREIGN KEY (user_id)
+REFERENCES TBL_USERS (id);
+
+ALTER TABLE TBL_USERS_COMPANIES
+ADD CONSTRAINT FK_COMPANIES_USERS_COMPANIES
+FOREIGN KEY (company_id)
+REFERENCES TBL_COMPANIES (id);
+
+ALTER TABLE TBL_MOVEMENT_TYPES
+ADD CONSTRAINT FK_COMPANIES_MOVEMENT_TYPES
+FOREIGN KEY (company_id)
+REFERENCES TBL_COMPANIES (id);
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT FK_COMPANIES_CASH_MOVEMENTS
+FOREIGN KEY (company_id)
+REFERENCES TBL_COMPANIES (id);
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT FK_MOVEMENT_TYPES_CASH_MOVEMEN
+FOREIGN KEY (category_id)
+REFERENCES TBL_MOVEMENT_TYPES (id);
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT FK_CASH_MOVEMENTS_CASH_MOVEMEN
+FOREIGN KEY (movement_id)
+REFERENCES TBL_CASH_MOVEMENTS (id);
+
+ALTER TABLE TBL_MONTHS_END_CLOSING
+ADD CONSTRAINT FK_COMPANIES_MONTHS_END_CLOSIN
+FOREIGN KEY (company_id)
+REFERENCES TBL_COMPANIES (id);
+
+ALTER TABLE TBL_CASH_DAILY_RESULTS
+ADD CONSTRAINT FK_COMPANIES_CASH_DAILY_RESULT
+FOREIGN KEY (company_id)
+REFERENCES TBL_COMPANIES (id);
+
+-- UNIQUE --
+
+ALTER TABLE TBL_USERS
+ADD CONSTRAINT UN_USERS_EMAIL
+UNIQUE ( email );
+
+-- CHECK --
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT CK_CASH_MOVEMENTS_MIN_AMOUNT
+CHECK (amount > 0);
+
+ALTER TABLE TBL_CASH_MOVEMENTS
+ADD CONSTRAINT CK_CASH_MOVEMENTS_STATUS
+CHECK (status IN ('OPEN', 'CLOSE'));
+
+ALTER TABLE TBL_CASH_DAILY_RESULTS
+ADD CONSTRAINT CK_DAILY_RESULT_MIN_INFLOWS
+CHECK (total_inflows >= 0);
+
+ALTER TABLE TBL_CASH_DAILY_RESULTS
+ADD CONSTRAINT CK_DAILY_RESULT_MIN_OUTFLOWS
+CHECK (total_outflows >= 0);
