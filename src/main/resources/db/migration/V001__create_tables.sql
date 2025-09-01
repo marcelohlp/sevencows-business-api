@@ -27,7 +27,7 @@ CREATE TABLE TBL_USERS_COMPANIES (
 CREATE TABLE TBL_COMPANIES (
     id                  BIGINT          NOT NULL,
     trade_name          VARCHAR(60)     NOT NULL,
-    legal_name          VARCHAR(60)     NOT NULL,
+    legal_name          VARCHAR(60)             ,
     company_type        VARCHAR(10)     NOT NULL,
     incorporation_date  DATE                    ,
     entry_date_time     TIMESTAMP       NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE TBL_COMPANIES (
 CREATE TABLE TBL_MOVEMENT_TYPES (
     id                  BIGINT          NOT NULL,
     company_id          BIGINT          NOT NULL,
-    movement_type	    VARCHAR(10)	    NOT NULL,
+    flow_type	        VARCHAR(10)	    NOT NULL,
     description		    VARCHAR(30)	    NOT NULL,
     entry_date_time     TIMESTAMP       NOT NULL,
     modify_date_time    TIMESTAMP       NOT NULL
@@ -46,9 +46,9 @@ CREATE TABLE TBL_MOVEMENT_TYPES (
 CREATE TABLE TBL_CASH_MOVEMENTS (
     id                  BIGINT          NOT NULL,
     company_id          BIGINT          NOT NULL,
-    category_id         BIGINT          NOT NULL,
-    movement_id        BIGINT                  ,
-    movement_type	    VARCHAR(10)	    NOT NULL,
+    movement_type_id    BIGINT          NOT NULL,
+    movement_id         BIGINT                  ,
+    flow_type	        VARCHAR(10)	    NOT NULL,
     status			    VARCHAR(5)		NOT NULL,
     amount			    DECIMAL(14,2)	NOT NULL,
     description		    VARCHAR(30)	    NOT NULL,
@@ -139,7 +139,7 @@ REFERENCES TBL_COMPANIES (id);
 
 ALTER TABLE TBL_CASH_MOVEMENTS
 ADD CONSTRAINT FK_MOVEMENT_TYPES_CASH_MOVEMEN
-FOREIGN KEY (category_id)
+FOREIGN KEY (movement_type_id)
 REFERENCES TBL_MOVEMENT_TYPES (id);
 
 ALTER TABLE TBL_CASH_MOVEMENTS
