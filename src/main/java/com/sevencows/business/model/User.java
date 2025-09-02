@@ -1,10 +1,15 @@
 package com.sevencows.business.model;
 
+import com.sevencows.business.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -15,7 +20,7 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "id")
@@ -41,10 +46,36 @@ public class User {
     @Column(name = "entry_date_time", nullable = false)
     private LocalDateTime entryDateTime;
 
+    @Column(name = "user_role", nullable = false)
+    private UserRole userRole;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserPreferences userPreferences;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCompany> userCompanyList;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return switch (this.userRole) {
+            case ADMIN -> List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+            case USER -> List.of(
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        };
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 
 }
