@@ -2,9 +2,6 @@ package com.sevencows.business.model.enums;
 
 public enum Pronoun {
 
-    HE("he"),
-    SHE("she");
+    HE, SHE;
 
-    Pronoun(String pronoun) {
-    }
 }

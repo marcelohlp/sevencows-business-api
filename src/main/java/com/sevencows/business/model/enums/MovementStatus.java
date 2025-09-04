@@ -2,9 +2,6 @@ package com.sevencows.business.model.enums;
 
 public enum MovementStatus {
 
-    OPEN("open"),
-    CLOSE("close");
+    OPEN, CLOSE;
 
-    MovementStatus(String movementStatus) {
-    }
 }

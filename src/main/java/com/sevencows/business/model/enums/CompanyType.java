@@ -2,12 +2,6 @@ package com.sevencows.business.model.enums;
 
 public enum CompanyType {
 
-    FREE("free"),
-    MICRO("micro"),
-    SMALL("small"),
-    MEDIUM("medium"),
-    LARGE("large");
+    FREE, MICRO, SMALL, MEDIUM, LARGE;
 
-    CompanyType(String companyType) {
-    }
 }
