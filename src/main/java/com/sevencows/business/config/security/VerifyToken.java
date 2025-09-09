@@ -37,27 +37,20 @@ public class VerifyToken extends OncePerRequestFilter {
 
         authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader == null) {
-            throw new TokenException("Missing 'Authorization' field in the header");
+        if (authorizationHeader != null) {
+            token = authorizationHeader.replace("Bearer", "").trim();
+            email = tokenService.validToken(token);
+            user = userRepository.findByEmail(email);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            user.getAuthorities()
+                    );
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
 
-        token = authorizationHeader.replace("Bearer", "").trim();
-        email = tokenService.validToken(token);
-
-        if (email == null || email.isEmpty()) {
-            throw new TokenException("Invalid or expired token");
-        }
-
-        user = userRepository.findByEmail(email);
-
-        if (user == null) {
-            throw new TokenException("User not found for token subject");
-        }
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);
-
     }
+
 }
