@@ -1,5 +1,6 @@
 package com.sevencows.business.model;
 
+import com.sevencows.business.dto.user.UserDtoRegister;
 import com.sevencows.business.model.enums.Gender;
 import com.sevencows.business.model.enums.Pronoun;
 import jakarta.persistence.*;
@@ -35,7 +36,15 @@ public class UserPreferences {
 
     @OneToOne(optional = false)
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
+
+    public UserPreferences(User user, UserDtoRegister userDtoRegister) {
+        this.user = user;
+        this.gender = Gender.valueOf(userDtoRegister.gender());
+        this.pronoun = Pronoun.valueOf(userDtoRegister.pronoun());
+        this.userTimezone = userDtoRegister.userTimezone();
+        this.preferredName = userDtoRegister.preferredName();
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.sevencows.business.model;
 
+import com.sevencows.business.dto.user.UserDtoRegister;
 import com.sevencows.business.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,6 +47,7 @@ public class User implements UserDetails {
     @Column(name = "entry_date_time", nullable = false)
     private LocalDateTime entryDateTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
     private UserRole userRole;
 
@@ -54,6 +56,20 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCompany> userCompanyList;
+
+    public User(UserDtoRegister userDtoRegister) {
+        this.firstName = userDtoRegister.firstName();
+        this.lastName = userDtoRegister.lastName();
+        this.email = userDtoRegister.email();
+        this.password = userDtoRegister.password();
+        this.birthday = userDtoRegister.birthday();
+        this.entryDateTime = userDtoRegister.entryDateTime();
+        this.userRole = UserRole.USER;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.password = encryptedPassword;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

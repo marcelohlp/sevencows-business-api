@@ -1,6 +1,7 @@
 package com.sevencows.business.advice;
 
 import com.sevencows.business.dto.ExceptionDtoResponse;
+import com.sevencows.business.exception.ActionNotAllowedException;
 import com.sevencows.business.exception.TokenException;
 import com.sevencows.business.exception.UnauthorizedActionException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,18 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
+
+    @ExceptionHandler(ActionNotAllowedException.class)
+    public ResponseEntity<ExceptionDtoResponse> getActionNotAllowedException(ActionNotAllowedException e) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ExceptionDtoResponse dto = new ExceptionDtoResponse(
+                e.getMessage(),
+                status,
+                status.value(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(status).body(dto);
+    }
 
     @ExceptionHandler(UnauthorizedActionException.class)
     public ResponseEntity<ExceptionDtoResponse> getUnauthorizedActionException(UnauthorizedActionException e) {
