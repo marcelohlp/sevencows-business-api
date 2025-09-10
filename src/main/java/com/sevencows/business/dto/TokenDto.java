@@ -5,6 +5,6 @@ public record TokenDto(
         String token
 ) {
     public TokenDto(String token) {
-        this(token, "Bearer");
+        this("Bearer", token);
     }
 }
