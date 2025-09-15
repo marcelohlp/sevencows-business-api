@@ -53,10 +53,12 @@ public record UserDtoRegister(
         @Size(min = 1, max = 60, message = "User timezone must be between 1 and 60 characters")
         String userTimezone,
 
+        @Schema(description = "User gender", example = "MALE, FEMALE, or OTHER")
         @NotBlank(message = "Gender is required")
         @ValidEnum(enumClass = Gender.class, message = "Gender must be MALE, FEMALE, or OTHER")
         String gender,
 
+        @Schema(description = "User pronoun", example = "HE or SHE")
         @NotBlank(message = "Pronoun is required")
         @ValidEnum(enumClass = Pronoun.class, message = "Pronoun must be HE or SHE")
         String pronoun
