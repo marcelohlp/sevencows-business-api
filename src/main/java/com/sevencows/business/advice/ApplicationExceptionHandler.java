@@ -2,6 +2,7 @@ package com.sevencows.business.advice;
 
 import com.sevencows.business.dto.ExceptionDtoResponse;
 import com.sevencows.business.exception.ActionNotAllowedException;
+import com.sevencows.business.exception.DataNotFoundException;
 import com.sevencows.business.exception.TokenException;
 import com.sevencows.business.exception.UnauthorizedActionException;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,18 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(UnauthorizedActionException.class)
     public ResponseEntity<ExceptionDtoResponse> getUnauthorizedActionException(UnauthorizedActionException e) {
         HttpStatus status = HttpStatus.FORBIDDEN;
+        ExceptionDtoResponse dto = new ExceptionDtoResponse(
+                e.getMessage(),
+                status,
+                status.value(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(status).body(dto);
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<ExceptionDtoResponse> getDataNotFoundException(DataNotFoundException e) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
         ExceptionDtoResponse dto = new ExceptionDtoResponse(
                 e.getMessage(),
                 status,
