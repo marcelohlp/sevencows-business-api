@@ -31,4 +31,11 @@ public class UserCompany {
     @Column(name = "role", nullable = false)
     private CompanyRole companyRole;
 
+    public UserCompany(User user, Company company) {
+        this.user = user;
+        this.company = company;
+        this.companyRole = CompanyRole.ADMIN;
+        this.id = new UserCompanyId(this.user.getId(), this.getCompany().getId());
+    }
+
 }

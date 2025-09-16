@@ -1,5 +1,6 @@
 package com.sevencows.business.model;
 
+import com.sevencows.business.dto.company.CompanyDtoRequest;
 import com.sevencows.business.model.enums.CompanyType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -57,4 +58,14 @@ public class Company {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<CashDailyResult> cashDailyResultList;
+
+    public Company(CompanyDtoRequest companyDtoRequest) {
+        this.tradeName = companyDtoRequest.tradeName();
+        this.legalName = companyDtoRequest.legalName();
+        this.companyType = CompanyType.valueOf(companyDtoRequest.companyType());
+        this.incorporationDate = companyDtoRequest.incorporationDate();
+        this.entryDateTime = companyDtoRequest.entryDateTime();
+        this.modifyDateTime = companyDtoRequest.modifyDateTime();
+    }
+
 }
