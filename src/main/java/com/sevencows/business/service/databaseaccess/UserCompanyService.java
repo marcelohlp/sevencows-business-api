@@ -1,4 +1,4 @@
-package com.sevencows.business.service;
+package com.sevencows.business.service.databaseaccess;
 
 import com.sevencows.business.model.Company;
 import com.sevencows.business.model.User;
@@ -15,7 +15,7 @@ public class UserCompanyService {
         this.userCompanyRepository = userCompanyRepository;
     }
 
-    protected UserCompany addUserCompany(User user, Company company) {
+    public UserCompany addUserCompany(User user, Company company) {
         UserCompany userCompany = new UserCompany(user, company);
         userCompany = userCompanyRepository.save(userCompany);
         return  userCompany;

@@ -1,4 +1,4 @@
-package com.sevencows.business.service;
+package com.sevencows.business.service.databaseaccess;
 
 import com.sevencows.business.dto.company.CompanyDtoRequest;
 import com.sevencows.business.model.Company;
@@ -14,7 +14,7 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    protected Company addCompany(CompanyDtoRequest companyDtoRequest) {
+    public Company addCompany(CompanyDtoRequest companyDtoRequest) {
         Company company = new Company(companyDtoRequest);
         company = companyRepository.save(company);
         return company;

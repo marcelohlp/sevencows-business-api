@@ -1,10 +1,12 @@
-package com.sevencows.business.service;
+package com.sevencows.business.service.auth;
 
 import com.sevencows.business.config.security.TokenService;
 import com.sevencows.business.dto.TokenDto;
 import com.sevencows.business.dto.user.UserDtoLogin;
 import com.sevencows.business.dto.user.UserDtoRegister;
 import com.sevencows.business.model.User;
+import com.sevencows.business.service.databaseaccess.UserPreferencesService;
+import com.sevencows.business.service.databaseaccess.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

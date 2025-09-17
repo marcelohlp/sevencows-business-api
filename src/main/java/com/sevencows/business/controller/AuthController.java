@@ -4,7 +4,7 @@ import com.sevencows.business.dto.ExceptionDtoResponse;
 import com.sevencows.business.dto.TokenDto;
 import com.sevencows.business.dto.user.UserDtoLogin;
 import com.sevencows.business.dto.user.UserDtoRegister;
-import com.sevencows.business.service.AuthService;
+import com.sevencows.business.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

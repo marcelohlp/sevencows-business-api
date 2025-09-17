@@ -2,8 +2,8 @@ package com.sevencows.business.controller;
 
 import com.sevencows.business.dto.company.CompanyDtoRequest;
 import com.sevencows.business.dto.company.CompanyDtoResponse;
-import com.sevencows.business.service.CompanyService;
-import com.sevencows.business.service.NewCompanyTransactionService;
+import com.sevencows.business.service.databaseaccess.CompanyService;
+import com.sevencows.business.service.company.NewCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,15 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/companies")
 public class CompanyController {
 
-    private final CompanyService companyService;
-    private final NewCompanyTransactionService newCompanyTransactionService;
+    private final NewCompanyService newCompanyService;
 
-    public CompanyController(
-            CompanyService companyService,
-            NewCompanyTransactionService newCompanyTransactionService
-    ) {
-        this.companyService = companyService;
-        this.newCompanyTransactionService = newCompanyTransactionService;
+    public CompanyController(NewCompanyService newCompanyService) {
+        this.newCompanyService = newCompanyService;
     }
 
     @Operation(summary = "Register new company")
@@ -36,8 +31,8 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "User not found")
     @PostMapping()
     public ResponseEntity<CompanyDtoResponse> addCompany(@RequestBody @Valid CompanyDtoRequest companyDtoRequest) {
-        CompanyDtoResponse companyDtoResponse = newCompanyTransactionService.addCompany(companyDtoRequest);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(companyDtoResponse);
+        CompanyDtoResponse companyDtoResponse = newCompanyService.addCompany(companyDtoRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(companyDtoResponse);
     }
 
 }

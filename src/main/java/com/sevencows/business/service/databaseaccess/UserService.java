@@ -1,4 +1,4 @@
-package com.sevencows.business.service;
+package com.sevencows.business.service.databaseaccess;
 
 import com.sevencows.business.dto.user.UserDtoRegister;
 import com.sevencows.business.model.User;
@@ -30,7 +30,7 @@ public class UserService {
         this.optionalContentExtractor = optionalContentExtractor;
     }
 
-    protected User addUser(UserDtoRegister userDtoRegister) {
+    public User addUser(UserDtoRegister userDtoRegister) {
         User user;
         String encryptedPassword = passwordEncoder.encode(userDtoRegister.password());
         user = new User(userDtoRegister);
@@ -39,7 +39,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    protected UserDetails findUserByEmail(String email) {
+    public UserDetails findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 

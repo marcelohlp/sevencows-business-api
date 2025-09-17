@@ -1,4 +1,4 @@
-package com.sevencows.business.service;
+package com.sevencows.business.service.databaseaccess;
 
 import com.sevencows.business.dto.user.UserDtoRegister;
 import com.sevencows.business.model.User;
@@ -21,7 +21,7 @@ public class UserPreferencesService {
         this.validateUserPreferencesRegisterList = validateUserPreferencesRegisterList;
     }
 
-    protected UserPreferences addUserPreferences(User user, UserDtoRegister userDtoRegister) {
+    public UserPreferences addUserPreferences(User user, UserDtoRegister userDtoRegister) {
         UserPreferences userPreferences = new UserPreferences(user, userDtoRegister);
         validateUserPreferencesRegisterList.forEach(validator -> validator.valid(userPreferences));
         return userPreferencesRepository.save(userPreferences);
