@@ -30,8 +30,19 @@ public class AuthController {
     }
 
     @Operation(summary = "Register new user")
-    @ApiResponse(responseCode = "201", description = "User created")
-    @ApiResponse(responseCode = "400", description = "Request wrong content")
+    @ApiResponse(
+            responseCode = "201",
+            description = "User created",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TokenDto.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Request wrong content",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionDtoResponse.class))
+    )
     @PostMapping("/register")
     public ResponseEntity<TokenDto> register(@RequestBody @Valid UserDtoRegister userDtoRegister) {
         TokenDto tokenDto = authService.register(userDtoRegister);
