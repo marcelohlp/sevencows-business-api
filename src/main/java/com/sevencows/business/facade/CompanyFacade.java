@@ -33,14 +33,19 @@ public class CompanyFacade {
         this.userCompanyService = userCompanyService;
     }
 
+    public CompanyDtoResponse get(Long companyId) {
+        Long userId = authenticatedUser.getUserId();
+        Company company = companyService.get(userId, companyId);
+        return new CompanyDtoResponse(company);
+    }
+
     public List<CompanyDtoResponse> getAll() {
         Long userId = authenticatedUser.getUserId();
         List<Company> companies = companyService.getAll(userId);
-        List<CompanyDtoResponse> companyDtoResponses = companies
+        return companies
                 .stream()
                 .map(CompanyDtoResponse::new)
                 .toList();
-        return companyDtoResponses;
     }
 
     @Transactional

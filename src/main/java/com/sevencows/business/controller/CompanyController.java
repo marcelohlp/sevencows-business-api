@@ -27,6 +27,30 @@ public class CompanyController {
         this.companyFacade = companyFacade;
     }
 
+    @Operation(summary = "Get user company by id")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Got user company",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = CompanyDtoResponse.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "User not found / Company not found",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionDtoResponse.class
+                    )
+            )
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyDtoResponse> get(@PathVariable("id") Long companyId) {
+        CompanyDtoResponse companyDtoResponse = companyFacade.get(companyId);
+        return ResponseEntity.status(HttpStatus.OK).body(companyDtoResponse);
+    }
+
     @Operation(summary = "Get all user companies")
     @ApiResponse(
             responseCode = "200",
