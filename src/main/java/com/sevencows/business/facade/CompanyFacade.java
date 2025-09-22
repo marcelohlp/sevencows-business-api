@@ -2,6 +2,7 @@ package com.sevencows.business.facade;
 
 import com.sevencows.business.config.security.AuthenticatedUser;
 import com.sevencows.business.dto.company.CompanyDtoRequest;
+import com.sevencows.business.dto.company.CompanyDtoRequestUpdate;
 import com.sevencows.business.dto.company.CompanyDtoResponse;
 import com.sevencows.business.model.Company;
 import com.sevencows.business.model.User;
@@ -52,8 +53,18 @@ public class CompanyFacade {
     public CompanyDtoResponse addCompany(CompanyDtoRequest companyDtoRequest) {
         Long userId = authenticatedUser.getUserId();
         User user = userService.findById(userId);
-        Company company = companyService.addCompany(companyDtoRequest);
+        Company company = companyService.save(companyDtoRequest);
         userCompanyService.addUserCompany(user, company);
+        return new CompanyDtoResponse(company);
+    }
+
+    @Transactional
+    public CompanyDtoResponse update(CompanyDtoRequestUpdate companyDtoRequestUpdate) {
+        Long userId = authenticatedUser.getUserId();
+        Long companyId = companyDtoRequestUpdate.id();
+        Company company = companyService.get(userId, companyId);
+        company.update(companyDtoRequestUpdate);
+        company = companyService.save(company);
         return new CompanyDtoResponse(company);
     }
 

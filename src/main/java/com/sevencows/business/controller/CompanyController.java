@@ -2,6 +2,7 @@ package com.sevencows.business.controller;
 
 import com.sevencows.business.dto.ExceptionDtoResponse;
 import com.sevencows.business.dto.company.CompanyDtoRequest;
+import com.sevencows.business.dto.company.CompanyDtoRequestUpdate;
 import com.sevencows.business.dto.company.CompanyDtoResponse;
 import com.sevencows.business.facade.CompanyFacade;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,12 +77,51 @@ public class CompanyController {
     }
 
     @Operation(summary = "Register new company")
-    @ApiResponse(responseCode = "201", description = "Company created")
-    @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(
+            responseCode = "201",
+            description = "Company created",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = CompanyDtoResponse.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "User not found",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionDtoResponse.class
+                    )
+            )
+    )
     @PostMapping()
     public ResponseEntity<CompanyDtoResponse> add(@RequestBody @Valid CompanyDtoRequest companyDtoRequest) {
         CompanyDtoResponse companyDtoResponse = companyFacade.addCompany(companyDtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(companyDtoResponse);
+    }
+
+    @Operation(summary = "Update company")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Company updated",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = CompanyDtoResponse.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "User not found / Company not found",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionDtoResponse.class
+                    )
+            )
+    )
+    @PutMapping()
+    public ResponseEntity<CompanyDtoResponse> update(@RequestBody @Valid CompanyDtoRequestUpdate companyDtoRequestUpdate) {
+        CompanyDtoResponse companyDtoResponse = companyFacade.update(companyDtoRequestUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(companyDtoResponse);
     }
 
 }

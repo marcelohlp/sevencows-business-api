@@ -1,6 +1,7 @@
 package com.sevencows.business.model;
 
 import com.sevencows.business.dto.company.CompanyDtoRequest;
+import com.sevencows.business.dto.company.CompanyDtoRequestUpdate;
 import com.sevencows.business.model.enums.CompanyType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,6 +67,14 @@ public class Company {
         this.incorporationDate = companyDtoRequest.incorporationDate();
         this.entryDateTime = companyDtoRequest.entryDateTime();
         this.modifyDateTime = companyDtoRequest.modifyDateTime();
+    }
+
+    public void update(CompanyDtoRequestUpdate companyDtoRequestUpdate) {
+        this.tradeName = companyDtoRequestUpdate.tradeName();
+        this.legalName = companyDtoRequestUpdate.legalName();
+        this.companyType = CompanyType.valueOf(companyDtoRequestUpdate.companyType());
+        this.incorporationDate = companyDtoRequestUpdate.incorporationDate();
+        this.modifyDateTime = companyDtoRequestUpdate.modifyDateTime();
     }
 
 }

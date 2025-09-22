@@ -33,10 +33,14 @@ public class CompanyService {
         return companyRepository.findByUserId(userId);
     }
 
-    public Company addCompany(CompanyDtoRequest companyDtoRequest) {
+    public Company save(CompanyDtoRequest companyDtoRequest) {
         Company company = new Company(companyDtoRequest);
         company = companyRepository.save(company);
         return company;
+    }
+
+    public Company save(Company company) {
+        return companyRepository.save(company);
     }
 
 }
