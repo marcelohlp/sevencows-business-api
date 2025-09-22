@@ -1,9 +1,11 @@
-package com.sevencows.business.service.databaseaccess;
+package com.sevencows.business.service;
 
 import com.sevencows.business.dto.company.CompanyDtoRequest;
 import com.sevencows.business.model.Company;
 import com.sevencows.business.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -12,6 +14,11 @@ public class CompanyService {
 
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
+    }
+
+    public List<Company> getAll(Long userId) {
+        List<Company> companies = companyRepository.findByUserId(userId);
+        return companies;
     }
 
     public Company addCompany(CompanyDtoRequest companyDtoRequest) {

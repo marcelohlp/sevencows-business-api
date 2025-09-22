@@ -1,25 +1,27 @@
-package com.sevencows.business.service.company;
+package com.sevencows.business.facade;
 
 import com.sevencows.business.config.security.AuthenticatedUser;
 import com.sevencows.business.dto.company.CompanyDtoRequest;
 import com.sevencows.business.dto.company.CompanyDtoResponse;
 import com.sevencows.business.model.Company;
 import com.sevencows.business.model.User;
-import com.sevencows.business.service.databaseaccess.UserCompanyService;
-import com.sevencows.business.service.databaseaccess.UserService;
-import com.sevencows.business.service.databaseaccess.CompanyService;
+import com.sevencows.business.service.UserCompanyService;
+import com.sevencows.business.service.UserService;
+import com.sevencows.business.service.CompanyService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
-public class NewCompanyService {
+public class CompanyFacade {
 
     private final CompanyService companyService;
     private final AuthenticatedUser authenticatedUser;
     private final UserService userService;
     private final UserCompanyService userCompanyService;
 
-    public NewCompanyService(
+    public CompanyFacade(
             CompanyService companyService,
             AuthenticatedUser authenticatedUser,
             UserService userService,
@@ -29,6 +31,16 @@ public class NewCompanyService {
         this.authenticatedUser = authenticatedUser;
         this.userService = userService;
         this.userCompanyService = userCompanyService;
+    }
+
+    public List<CompanyDtoResponse> getAll() {
+        Long userId = authenticatedUser.getUserId();
+        List<Company> companies = companyService.getAll(userId);
+        List<CompanyDtoResponse> companyDtoResponses = companies
+                .stream()
+                .map(CompanyDtoResponse::new)
+                .toList();
+        return companyDtoResponses;
     }
 
     @Transactional

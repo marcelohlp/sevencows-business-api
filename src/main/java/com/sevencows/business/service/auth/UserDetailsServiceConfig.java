@@ -1,7 +1,7 @@
 package com.sevencows.business.service.auth;
 
 import com.sevencows.business.exception.UnauthorizedActionException;
-import com.sevencows.business.service.databaseaccess.UserService;
+import com.sevencows.business.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

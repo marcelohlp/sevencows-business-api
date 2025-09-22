@@ -1,4 +1,4 @@
-package com.sevencows.business.service.databaseaccess;
+package com.sevencows.business.service;
 
 import com.sevencows.business.model.Company;
 import com.sevencows.business.model.User;
