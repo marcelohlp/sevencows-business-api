@@ -68,4 +68,11 @@ public class CompanyFacade {
         return new CompanyDtoResponse(company);
     }
 
+    @Transactional
+    public void delete(Long companyId) {
+        Long userId = authenticatedUser.getUserId();
+        Company company = companyService.get(userId, companyId);
+        companyService.delete(company);
+    }
+
 }

@@ -124,4 +124,28 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(companyDtoResponse);
     }
 
+    @Operation(summary = "Update company")
+    @ApiResponse(
+            responseCode = "204",
+            description = "Company removed",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Void.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "User not found / Company not found",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionDtoResponse.class
+                    )
+            )
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long companyId) {
+        companyFacade.delete(companyId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
