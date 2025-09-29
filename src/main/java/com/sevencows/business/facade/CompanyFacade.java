@@ -6,6 +6,7 @@ import com.sevencows.business.dto.company.CompanyDtoRequestUpdate;
 import com.sevencows.business.dto.company.CompanyDtoResponse;
 import com.sevencows.business.model.Company;
 import com.sevencows.business.model.User;
+import com.sevencows.business.model.enums.CompanyRole;
 import com.sevencows.business.service.UserCompanyService;
 import com.sevencows.business.service.UserService;
 import com.sevencows.business.service.CompanyService;
@@ -50,11 +51,11 @@ public class CompanyFacade {
     }
 
     @Transactional
-    public CompanyDtoResponse addCompany(CompanyDtoRequest companyDtoRequest) {
+    public CompanyDtoResponse add(CompanyDtoRequest companyDtoRequest) {
         Long userId = authenticatedUser.getUserId();
         User user = userService.findById(userId);
         Company company = companyService.save(companyDtoRequest);
-        userCompanyService.addUserCompany(user, company);
+        userCompanyService.add(user, company);
         return new CompanyDtoResponse(company);
     }
 
@@ -62,6 +63,7 @@ public class CompanyFacade {
     public CompanyDtoResponse update(CompanyDtoRequestUpdate companyDtoRequestUpdate) {
         Long userId = authenticatedUser.getUserId();
         Long companyId = companyDtoRequestUpdate.id();
+        userCompanyService.validUserCompanyAuth(userId, companyId, CompanyRole.ADMIN);
         Company company = companyService.get(userId, companyId);
         company.update(companyDtoRequestUpdate);
         company = companyService.save(company);
@@ -71,6 +73,7 @@ public class CompanyFacade {
     @Transactional
     public void delete(Long companyId) {
         Long userId = authenticatedUser.getUserId();
+        userCompanyService.validUserCompanyAuth(userId, companyId, CompanyRole.ADMIN);
         Company company = companyService.get(userId, companyId);
         companyService.delete(company);
     }

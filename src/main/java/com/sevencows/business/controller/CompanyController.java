@@ -96,7 +96,7 @@ public class CompanyController {
     )
     @PostMapping()
     public ResponseEntity<CompanyDtoResponse> add(@RequestBody @Valid CompanyDtoRequest companyDtoRequest) {
-        CompanyDtoResponse companyDtoResponse = companyFacade.addCompany(companyDtoRequest);
+        CompanyDtoResponse companyDtoResponse = companyFacade.add(companyDtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(companyDtoResponse);
     }
 

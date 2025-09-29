@@ -18,12 +18,12 @@ public class UserCompany {
     private UserCompanyId id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("user")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("company")
+    @MapsId("companyId")
     @JoinColumn(name = "company_id")
     private Company company;
 

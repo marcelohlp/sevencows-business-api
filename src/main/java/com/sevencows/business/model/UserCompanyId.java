@@ -16,9 +16,9 @@ import java.io.Serializable;
 public class UserCompanyId implements Serializable {
 
     @Column(name = "user_id")
-    private Long user;
+    private Long userId;
 
     @Column(name = "company_id")
-    private Long company;
+    private Long companyId;
 
 }
